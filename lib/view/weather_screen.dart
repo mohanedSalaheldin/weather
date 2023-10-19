@@ -1,7 +1,5 @@
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:weather_app/constants/api_key.dart';
-import 'package:http/http.dart' as http;
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
@@ -37,6 +35,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: AnimSearchBar(
+                color: const Color(0xfff39060),
                 rtl: true,
                 width: MediaQuery.sizeOf(context).width / .9,
                 textController: searchController,
@@ -56,8 +55,61 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.location_on_outlined),
-                      Text('data'),
+                      Icon(
+                        Icons.location_on,
+                        size: 30,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        'Dubai',
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Text(
+                    'Weather message',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '35',
+                        style: TextStyle(
+                          fontSize: 38,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '°',
+                        style: TextStyle(
+                          fontSize: 38,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        'C',
+                        style: TextStyle(
+                          fontSize: 38,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -66,14 +118,14 @@ class _WeatherScreenState extends State<WeatherScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          var url = Uri.https('api.openweathermap.org', '/data/2.5/weather',
-              {'q': 'cairo', "units": "metric", "appid": apiKey});
-          final http.Response response = await http.get(url);
-          print(response.body);
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () async {
+      //     var url = Uri.https('api.openweathermap.org', '/data/2.5/weather',
+      //         {'q': 'cairo', "units": "metric", "appid": apiKey});
+      //     final http.Response response = await http.get(url);
+      //     print(response.body);
+      //   },
+      // ),
     );
   }
 }
