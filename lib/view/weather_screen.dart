@@ -1,5 +1,7 @@
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:weather_app/logic/models/weather_model.dart';
+import 'package:weather_app/logic/services/api_calls.dart';
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
@@ -40,11 +42,17 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 width: MediaQuery.sizeOf(context).width / .9,
                 textController: searchController,
                 onSuffixTap: () {
-                  setState(() {
-                    searchController.clear();
-                  });
+                  // setState(() {
+                  //   searchController.clear();
+                  // });
                 },
-                onSubmitted: (p0) {},
+                onSubmitted: (p0) async {
+                  ApiCalls call = ApiCalls();
+                  WeatherModel? mo = await call.getDataFromApiByCityName(
+                      city: searchController.text);
+
+                  print(mo?.toJson());
+                },
               ),
             ),
             const Expanded(
