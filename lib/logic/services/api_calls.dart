@@ -9,6 +9,17 @@ import 'package:weather_app/constants/api_key.dart';
 import 'package:weather_app/logic/models/weather_model.dart';
 
 class ApiCalls {
+  static Future<WeatherModel?> getData({
+    String? city,
+    required bool myLocation,
+  }) async {
+    if (myLocation) {
+      return getCurrentLocation();
+    } else {
+      return getDataFromApiByCityName(city: city!);
+    }
+  }
+
   static Future<WeatherModel?> getDataFromApiByCityName({
     required String city,
     // required bool byLocation,
@@ -49,7 +60,7 @@ class ApiCalls {
       (value) async {
         List<Placemark> placemarks =
             await placemarkFromCoordinates(value.latitude, value.longitude);
-        print(placemarks[0].toString());
+        // print(placemarks[0].toString());
         return placemarks[0].locality;
       },
     );
