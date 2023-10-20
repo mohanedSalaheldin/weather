@@ -14,6 +14,12 @@ TextEditingController searchController = TextEditingController();
 
 class _WeatherScreenState extends State<WeatherScreen> {
   @override
+  void initState() {
+    ApiCalls.menagePermission();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -41,21 +47,19 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 rtl: true,
                 width: MediaQuery.sizeOf(context).width / .9,
                 textController: searchController,
-                onSuffixTap: () {
-                  // setState(() {
-                  //   searchController.clear();
-                  // });
-                },
+                onSuffixTap: () {},
                 onSubmitted: (p0) async {
-                  ApiCalls call = ApiCalls();
-                  WeatherModel? mo = await call.getDataFromApiByCityName(
-                      city: searchController.text);
+                  // ApiCalls call = ApiCalls();
+                  WeatherModel? mo = await ApiCalls.getDataFromApiByCityName(
+                    city: searchController.text,
+                  );
 
-                  print(mo?.toJson());
+                  print(mo?.city);
+                  print(mo?.temp);
                 },
               ),
             ),
-            const Expanded(
+            Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
@@ -63,12 +67,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.location_on,
-                        size: 30,
-                        color: Colors.white,
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.location_on,
+                          size: 30,
+                          color: Colors.white,
+                        ),
                       ),
-                      Text(
+                      const Text(
                         'Dubai',
                         style: TextStyle(
                           fontSize: 25,
@@ -78,20 +85,20 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20.0,
                   ),
-                  Text(
+                  const Text(
                     'Weather message',
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20.0,
                   ),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
@@ -126,14 +133,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () async {
-      //     var url = Uri.https('api.openweathermap.org', '/data/2.5/weather',
-      //         {'q': 'cairo', "units": "metric", "appid": apiKey});
-      //     final http.Response response = await http.get(url);
-      //     print(response.body);
-      //   },
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          String? mo = await ApiCalls.getPositionAsString();
+          WeatherModel? model =
+              await ApiCalls.getDataFromApiByCityName(city: mo!);
+          print(model?.temp);
+          print(model?.city);
+        },
+      ),
     );
   }
 }
